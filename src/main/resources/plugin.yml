@@ -1,0 +1,4 @@
+name: crops
+version: '${version}'
+main: fr.ethilvan.crops.Crops
+api-version: '1.20'
