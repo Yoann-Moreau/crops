@@ -2,6 +2,7 @@ package fr.ethilvan.crops.listeners;
 
 import fr.ethilvan.crops.Crops;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.event.EventHandler;
@@ -58,9 +59,14 @@ public class CropsListeners implements Listener {
 				block.setBlockData(ageable);
 
 				Damageable damageable = (Damageable) item.getItemMeta();
-				int damage = damageable.getDamage();
-				damageable.setDamage(damage + 1);
-				item.setItemMeta(damageable);
+				damageable.setDamage(damageable.getDamage() + 1);
+				if (damageable.getDamage() >= item.getType().getMaxDurability()) {
+					item.setAmount(0);
+					e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
+				}
+				else {
+					item.setItemMeta(damageable);
+				}
 			}
 		}
 	}
