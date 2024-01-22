@@ -48,14 +48,17 @@ public class CropsListeners implements Listener {
 			if (ageable.getAge() == ageable.getMaximumAge()) {
 
 				@NotNull Collection<ItemStack> drops = block.getDrops();
-				drops.forEach(drop -> {
-					if (!drop.getType().equals(Material.WHEAT_SEEDS) &&
-							!drop.getType().equals(Material.BEETROOT_SEEDS)) {
-						block.getWorld().dropItem(block.getLocation(), drop);
+				for (ItemStack drop : drops) {
+					if (drop.getType().equals(Material.WHEAT_SEEDS) || drop.getType().equals(Material.BEETROOT_SEEDS)) {
+						continue;
 					}
-				});
+					if (drop.getType().equals(Material.CARROT) || drop.getType().equals(Material.POTATO)) {
+						drop.setAmount(drop.getAmount() - 1);
+					}
+					block.getWorld().dropItem(block.getLocation(), drop);
+				}
 
-				ageable.setAge(1);
+				ageable.setAge(0);
 				block.setBlockData(ageable);
 
 				Damageable damageable = (Damageable) item.getItemMeta();
