@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class CropsListeners implements Listener {
@@ -81,10 +83,37 @@ public class CropsListeners implements Listener {
 			ageable.setAge(0);
 			block.setBlockData(ageable);
 
+			// Skip if not damageable
+			if (!(item.getItemMeta() instanceof Damageable damageable)) {
+				return;
+			}
+
+			// Skip if unbreakable
+			if (damageable.isUnbreakable()) {
+				return;
+			}
+
+			int unbreakingLevel = damageable.getEnchantLevel(Enchantment.UNBREAKING);
+			int currentDamage = damageable.hasDamageValue() ? damageable.getDamage() : 0;
+
+			ThreadLocalRandom random = ThreadLocalRandom.current();
+
+			float breakRatio = switch (unbreakingLevel) {
+				case 1 -> 0.5f;
+				case 2 -> 0.33f;
+				case 3 -> 0.25f;
+				default -> 1f;
+			};
+			float randomFloat = random.nextFloat();
+
+			// Skip randomly depending on unbreaking enchantment
+			if (randomFloat < 1f - breakRatio) {
+				return;
+			}
+
 			// Damage tool
-			Damageable damageable = (Damageable) item.getItemMeta();
-			damageable.setDamage(damageable.getDamage() + 1);
-			if (damageable.getDamage() >= item.getType().getMaxDurability()) {
+			damageable.setDamage(currentDamage + 1);
+			if (currentDamage + 1 >= item.getType().getMaxDurability()) {
 				item.setAmount(0);
 				e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
 			}
