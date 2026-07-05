@@ -39,10 +39,13 @@ public class CropsListeners implements Listener {
 	};
 
 	private final Material[] dropsToReduce = new Material[]{
-			Material.WHEAT_SEEDS,
-			Material.BEETROOT_SEEDS,
 			Material.CARROT,
 			Material.POTATO,
+	};
+
+	private final Material[] dropsToCancel = new Material[]{
+			Material.WHEAT_SEEDS,
+			Material.BEETROOT_SEEDS,
 	};
 
 
@@ -73,6 +76,9 @@ public class CropsListeners implements Listener {
 			// Reduce drops if item used as seed
 			@NotNull Collection<ItemStack> drops = block.getDrops();
 			for (ItemStack drop : drops) {
+				if (Arrays.asList(dropsToCancel).contains(drop.getType())) {
+					continue;
+				}
 				if (Arrays.asList(dropsToReduce).contains(drop.getType())) {
 					drop.setAmount(drop.getAmount() - 1);
 				}
