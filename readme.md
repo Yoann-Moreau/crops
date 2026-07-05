@@ -1,6 +1,6 @@
 # Crops
 
-Crops is a papermc plugin for Minecraft 1.20.4.
+Crops is a PaperMC plugin for Minecraft 26.1.2.
 When using a hoe crops are not destroyed but their growth is reset and their drops altered to not drop seeds.
 
 ## Installation
