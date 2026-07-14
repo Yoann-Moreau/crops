@@ -24,6 +24,7 @@ public class CropsListeners implements Listener {
 
 	private final Material[] tools = new Material[]{
 			Material.WOODEN_HOE,
+			Material.STONE_HOE,
 			Material.COPPER_HOE,
 			Material.IRON_HOE,
 			Material.GOLDEN_HOE,
