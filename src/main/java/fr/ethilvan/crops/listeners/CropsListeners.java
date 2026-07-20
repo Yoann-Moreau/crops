@@ -37,11 +37,13 @@ public class CropsListeners implements Listener {
 			Material.CARROTS,
 			Material.POTATOES,
 			Material.BEETROOTS,
+			Material.NETHER_WART,
 	};
 
 	private final Material[] dropsToReduce = new Material[]{
 			Material.CARROT,
 			Material.POTATO,
+			Material.NETHER_WART,
 	};
 
 	private final Material[] dropsToCancel = new Material[]{
